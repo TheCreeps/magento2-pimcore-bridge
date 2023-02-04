@@ -1,0 +1,28 @@
+{
+    "name": "zecreeps/module-pimcore-integration",
+    "description": "Magento-Pimcore bridge module for magento 2.4.x.",
+    "version": "1.0",
+    "require": {
+        "magento/product-community-edition": "^2.2 || ^2.3 || ^2.4",
+        "ext-fileinfo": "*",
+        "ext-json": "*"
+    },
+    "type": "magento2-module",
+    "license": [
+        "MIT"
+    ],
+    "authors": [
+        {
+            "name": "Bartosz Herba",
+            "email": "bherba@divante.pl"
+        }
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Divante\\PimcoreIntegration\\": ""
+        }
+    }
+}
