@@ -67,9 +67,9 @@ class StockUpdateListener implements ObserverInterface
         try {
             $stockItem = $this->stockRegistry->getStockItemBySku($product->getSku());
             // We should not set qty if is already set, ERP should be responsible for updating stocks
-            if ($stockItem->getQty()) {
-                return;
-            }
+            //if ($stockItem->getQty()) {
+                //return;
+            //}
 
             if ($product->getTypeId() === Configurable::TYPE_CODE) {
                 $stockItem->setIsInStock(true);

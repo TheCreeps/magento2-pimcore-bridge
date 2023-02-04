@@ -10,7 +10,6 @@ namespace Divante\PimcoreIntegration\Listeners;
 
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Api\CategoryLinkRepositoryInterface;
-use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\CouldNotSaveException;
@@ -27,9 +26,9 @@ class CategoryLinkerListener implements ObserverInterface
     private $categoryLinkManagement;
 
     /**
-     * @var CategoryRepositoryInterface
+     * @var CategoryLinkRepositoryInterface
      */
-    private CategoryRepositoryInterface $categoryRepository;
+    private $categoryLinkRepository;
 
     /**
      * CategoryModifier constructor.
@@ -39,10 +38,10 @@ class CategoryLinkerListener implements ObserverInterface
      */
     public function __construct(
         CategoryLinkManagementInterface $categoryLinkManagement,
-        CategoryRepositoryInterface $categoryRepository
+        CategoryLinkRepositoryInterface $categoryLinkRepository
     ) {
         $this->categoryLinkManagement = $categoryLinkManagement;
-        $this->categoryRepository = $categoryRepository;
+        $this->categoryLinkRepository = $categoryLinkRepository;
     }
 
     /**
@@ -60,14 +59,18 @@ class CategoryLinkerListener implements ObserverInterface
 
         $categoryIds = $pimcoreProduct->getData('category_ids') ?? [];
 
-        // Reset internal cache containing category -> product link
-        // Otherwise the assignProductToCategories method will not behave consistently
-        foreach ($categoryIds as $categoryId) {
-            $category = $this->categoryRepository->get($categoryId);
-            $category->setData('products_position', null);
+        $catsToUnlink = array_diff($product->getCategoryIds(), $categoryIds);
+        $catsToLink = array_diff($categoryIds, $product->getCategoryIds());
+
+        if ($catsToLink) {
+            $this->categoryLinkManagement->assignProductToCategories($product->getSku(), $catsToLink);
         }
-		
-        $this->categoryLinkManagement->assignProductToCategories($product->getSku(), $categoryIds);
+
+        if ($catsToUnlink) {
+            foreach ($catsToUnlink as $catId) {
+                $this->categoryLinkRepository->deleteByIds($catId, $product->getSku());
+            }
+        }
 
         $product->setData('category_ids', $categoryIds);
     }

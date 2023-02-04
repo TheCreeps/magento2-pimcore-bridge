@@ -15,6 +15,7 @@ use Divante\PimcoreIntegration\Queue\QueueStatusInterface;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Catalog\Model\Product\Type;
+use Magento\Catalog\Model\Product\Visibility;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilderFactory;
 use Magento\Framework\Exception\LocalizedException;
@@ -98,6 +99,7 @@ class SimpleProductStrategy implements ProductTypeCreationStrategyInterface
         }
 
         $product->setStatus(Status::STATUS_ENABLED);
+		$product->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
 
         return $product;
     }

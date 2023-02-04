@@ -55,7 +55,7 @@ class ProductTypeResolver
      *
      * @return array
      */
-    public function beforeReturn(array $data, string $type): array
+    protected function beforeReturn(array $data, string $type): array
     {
         return [$data, $type];
     }
