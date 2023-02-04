@@ -11,6 +11,7 @@ namespace Divante\PimcoreIntegration\Model;
 use Divante\PimcoreIntegration\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Catalog\Model\CategoryFactory;
+use Magento\Catalog\Model\CategoryRepository\PopulateWithValues;
 use Magento\Catalog\Model\ResourceModel\Category;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -32,15 +33,17 @@ class CategoryRepository extends \Magento\Catalog\Model\CategoryRepository imple
      * @param CategoryFactory $categoryFactory
      * @param Category $categoryResource
      * @param StoreManagerInterface $storeManager
+	 * @param PopulateWithValues $populateWithValues
      * @param CollectionFactory $collectionFactory
      */
     public function __construct(
         CategoryFactory $categoryFactory,
         Category $categoryResource,
         StoreManagerInterface $storeManager,
+		PopulateWithValues $populateWithValues,
         CollectionFactory $collectionFactory
     ) {
-        parent::__construct($categoryFactory, $categoryResource, $storeManager);
+        parent::__construct($categoryFactory, $categoryResource, $storeManager, $populateWithValues);
         $this->collectionFactory = $collectionFactory;
     }
 

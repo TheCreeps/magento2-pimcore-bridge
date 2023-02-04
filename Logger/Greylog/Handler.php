@@ -23,8 +23,23 @@ class Handler extends AbstractProcessingHandler
      *
      * @return void
      */
-    protected function write(array $record)
-    {
-        // TODO: Implement write() method.
+    public function write(array $record): void {
+        if (isset($record['file'])) {
+            $url = empty($record['file'])
+                ? BP . '/var/log/mana.log'
+                : BP . '/var/log/mana/' . $record['file'] . '.log';
+
+            unset($record['file']);
+        }
+        else {
+            $url = BP . '/var/log/mana.log';
+        }
+
+        if ($this->url != $url) {
+            $this->close();
+            $this->url = $url;
+        }
+
+        parent::write($record);
     }
 }
