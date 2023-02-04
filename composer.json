@@ -1,5 +1,5 @@
 {
-    "name": "zecreeps/module-pimcore-integration",
+    "name": "zecreeps/module-bridge-Magento-Pimcore-integration",
     "description": "Magento-Pimcore bridge module for magento 2.4.x.",
     "version": "1.0",
     "require": {
